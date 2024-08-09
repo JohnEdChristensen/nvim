@@ -80,7 +80,7 @@ vim.keymap.set('i', 'jk', '<Esc>')
 
 vim.keymap.set('n', '<leader>ww', '<cmd>w<CR>')
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>le', vim.diagnostic.setloclist, { desc = 'Open [d]iagnostic' })
+vim.keymap.set('n', '<leader>le', vim.diagnostic.open_float, { desc = 'Open [d]iagnostic' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -711,7 +711,9 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter-context',
     config = function()
-      require('treesitter-context').setup {}
+      require('treesitter-context').setup {
+        max_lines = 4,
+      }
 
       vim.cmd [[hi TreesitterContextBottom gui=underline guisp=Grey]]
       vim.cmd [[hi TreesitterContextLineNumberBottom gui=underline guisp=Grey]]
