@@ -412,7 +412,20 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         pyright = {},
-        rust_analyzer = {},
+        rust_analyzer = {
+          settings = {
+            ['rust-analyzer'] = {
+              diagnostics = {
+                enable = false,
+              },
+              cargo = {
+                -- this fixes an issue where rust-analyzer was invalidating
+                -- the cargo cache, so unnecessary recompiles were occuring
+                targetDir = true,
+              },
+            },
+          },
+        },
         tsserver = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
