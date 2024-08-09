@@ -297,7 +297,22 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      {
+        'j-hui/fidget.nvim',
+        opts = {
+          progress = {
+            display = {
+              done_ttl = 1,
+            },
+          },
+          notification = {
+            window = {
+              max_width = 50,
+              max_height = 5,
+            },
+          },
+        },
+      },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -644,10 +659,14 @@ require('lazy').setup({
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       vim.cmd.colorscheme 'everforest'
-
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment guifg=@Green'
-      vim.api.nvim_set_hl(0, 'Comment', { link = 'text' })
+    end,
+    config = function()
+      ---@diagnostic disable-next-line: missing-fields
+      require('everforest').setup {
+        on_highlights = function(hl, palette)
+          --hl.Comment = { fg = palette.fg }
+        end,
+      }
     end,
   },
 
