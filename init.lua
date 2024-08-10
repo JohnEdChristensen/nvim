@@ -302,6 +302,7 @@ require('lazy').setup({
         opts = {
           progress = {
             display = {
+              render_limit = 16,
               done_ttl = 1,
             },
           },
