@@ -153,12 +153,12 @@ require('lazy').setup({
 
       -- Document existing key chains
       require('which-key').setup {
-        { '<leader>c', group = '[C]ode' },
-        { '<leader>d', group = '[D]ocument' },
+        --{ '<leader>c', group = '[C]ode' },
+        --{ '<leader>d', group = '[D]ocument' },
         { '<leader>l', group = '[L]anguage Server' },
-        { '<leader>lr', group = '[R]ename' },
+        --{ '<leader>lr', group = '[R]ename' },
         { '<leader>f', group = '[F]ind' },
-        { '<leader>w', group = '[W]orkspace' },
+        --{ '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       }
@@ -357,7 +357,9 @@ require('lazy').setup({
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>lr', vim.lsp.buf.rename, '[R]ename')
+          map('<leader>lR', vim.lsp.buf.rename, '[r]ename')
+
+          map('<leader>lr', require('telescope.builtin').lsp_references, 'List [R]eferances')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.

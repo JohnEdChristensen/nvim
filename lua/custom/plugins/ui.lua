@@ -40,7 +40,7 @@ return {
     dependencies = 'nvim-tree/nvim-web-devicons',
     config = function()
       require('bufferline').setup {}
-      vim.keymap.set('n', '<Tab>', '<cmd>bp<cr>', { desc = 'next buffer' })
+      vim.keymap.set('n', '<Tab>', '<cmd>bn<cr>', { desc = 'next buffer' })
       vim.keymap.set('n', '<S-Tab>', '<cmd>bp<cr>', { desc = 'previous buffer' })
     end,
   },
