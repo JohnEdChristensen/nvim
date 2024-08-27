@@ -429,7 +429,41 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pyright = {},
+        ruff_lsp = {
+          -- unsure of format
+          -- settings = {
+          --   ['ruff-lsp'] = {
+          --   },
+          -- },
+        },
+
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                diagnosticSeverityOverrides = {
+                  reportUnusedExpression = 'none',
+                },
+              },
+            },
+          },
+        },
+
+        -- pylsp = {
+        --   settings = {
+        --     pylsp = {
+        --       plugins = {
+        --         ruff = {
+        --           enable = true,
+        --         },
+        --         rope_autoimport = {
+        --           enabled = true,
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
+
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
