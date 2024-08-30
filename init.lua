@@ -431,10 +431,16 @@ require('lazy').setup({
         -- gopls = {},
         ruff_lsp = {
           -- unsure of format
-          -- settings = {
-          --   ['ruff-lsp'] = {
-          --   },
-          -- },
+          settings = {
+            lint = {
+              args = '--ignore "E402"',
+            },
+            ['ruff-lsp'] = {
+              lint = {
+                args = '--ignore "E402"',
+              },
+            },
+          },
         },
 
         pyright = {
@@ -606,6 +612,7 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'jmbuhr/otter.nvim',
     },
     config = function()
       -- See `:help cmp`
