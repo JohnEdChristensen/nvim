@@ -473,6 +473,7 @@ require('lazy').setup({
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
+              checkOnSave = { allTargets = false },
               diagnostics = {
                 enable = false,
               },
