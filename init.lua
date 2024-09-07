@@ -430,6 +430,7 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         pyright = {},
+        wgsl_analyzer = {},
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
