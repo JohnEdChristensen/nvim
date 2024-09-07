@@ -429,11 +429,52 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pyright = {},
         wgsl_analyzer = {},
+        ruff_lsp = {
+          -- unsure of format
+          settings = {
+            lint = {
+              args = '--ignore "E402"',
+            },
+            ['ruff-lsp'] = {
+              lint = {
+                args = '--ignore "E402"',
+              },
+            },
+          },
+        },
+
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                diagnosticSeverityOverrides = {
+                  reportUnusedExpression = 'none',
+                },
+              },
+            },
+          },
+        },
+
+        -- pylsp = {
+        --   settings = {
+        --     pylsp = {
+        --       plugins = {
+        --         ruff = {
+        --           enable = true,
+        --         },
+        --         rope_autoimport = {
+        --           enabled = true,
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
+
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
+              checkOnSave = { allTargets = false },
               diagnostics = {
                 enable = false,
               },
@@ -573,6 +614,7 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'jmbuhr/otter.nvim',
     },
     config = function()
       -- See `:help cmp`
