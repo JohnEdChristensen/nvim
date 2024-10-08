@@ -459,28 +459,12 @@ require('lazy').setup({
             },
           },
         },
-
-        -- pylsp = {
-        --   settings = {
-        --     pylsp = {
-        --       plugins = {
-        --         ruff = {
-        --           enable = true,
-        --         },
-        --         rope_autoimport = {
-        --           enabled = true,
-        --         },
-        --       },
-        --     },
-        --   },
-        -- },
-
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
-              -- checkOnSave = { allTargets = false },
-              diagnostics = {
-                enable = false,
+              checkOnSave = {
+                -- allTargets = false, -- workaround to avoid errors in nostd development
+                command = 'clippy',
               },
               cargo = {
                 -- this fixes an issue where rust-analyzer was invalidating
