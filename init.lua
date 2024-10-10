@@ -794,11 +794,24 @@ require('lazy').setup({
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          -- init_selection = '<leader>nn', -- set to `false` to disable one of the mappings
+          -- node_incremental = '<leader>rn',
+          -- scope_incremental = '<leader>rc',
+          -- node_decremental = '<leader>rm',
+        },
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+      --
+      -- Highlight @foo.bar as "Identifier" only in Lua files
+      vim.api.nvim_set_hl(0, '@lsp.type.typeParameter', { link = 'Orange' })
+      vim.api.nvim_set_hl(0, '@type.param', { link = 'Orange' })
 
-      ---@diagnostic disable-next-line: missing-fields
+      --@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
 
       -- There are additional nvim-treesitter modules that you can use to interact
