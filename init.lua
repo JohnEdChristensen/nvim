@@ -459,28 +459,12 @@ require('lazy').setup({
             },
           },
         },
-
-        -- pylsp = {
-        --   settings = {
-        --     pylsp = {
-        --       plugins = {
-        --         ruff = {
-        --           enable = true,
-        --         },
-        --         rope_autoimport = {
-        --           enabled = true,
-        --         },
-        --       },
-        --     },
-        --   },
-        -- },
-
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
-              -- checkOnSave = { allTargets = false },
-              diagnostics = {
-                enable = false,
+              checkOnSave = {
+                -- allTargets = false, -- workaround to avoid errors in nostd development
+                command = 'clippy',
               },
               cargo = {
                 -- this fixes an issue where rust-analyzer was invalidating
@@ -491,7 +475,7 @@ require('lazy').setup({
           },
         },
         ts_ls = {},
-        fennel_ls = {},
+        --fennel_ls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
