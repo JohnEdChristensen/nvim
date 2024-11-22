@@ -363,6 +363,8 @@ require('lazy').setup({
           --  Most Language Servers support renaming across files, etc.
           map('<leader>lR', vim.lsp.buf.rename, '[r]ename')
 
+          map('<leader>lf', vim.lsp.buf.format, '[f]ormat')
+
           map('<leader>lr', require('telescope.builtin').lsp_references, 'List [R]eferances')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
@@ -462,6 +464,10 @@ require('lazy').setup({
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
+              diagnostics = {
+                disabled = { 'inactive-code' },
+              },
+
               checkOnSave = {
                 -- allTargets = false, -- workaround to avoid errors in nostd development
                 command = 'clippy',
@@ -469,7 +475,9 @@ require('lazy').setup({
               cargo = {
                 -- this fixes an issue where rust-analyzer was invalidating
                 -- the cargo cache, so unnecessary recompiles were occuring
-                targetDir = true,
+                -- targetDir = true,
+                -- features = 'all',
+                -- allTargets = true,
               },
             },
           },
