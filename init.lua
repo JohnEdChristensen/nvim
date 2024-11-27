@@ -11,6 +11,8 @@ vim.g.have_nerd_font = true
 
 -- Make line numbers default
 vim.opt.number = true
+-- only one status line
+vim.opt.laststatus = 3
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
@@ -57,7 +59,8 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -67,6 +70,7 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+vim.opt.tabstop = 4
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -359,6 +363,8 @@ require('lazy').setup({
           --  Most Language Servers support renaming across files, etc.
           map('<leader>lR', vim.lsp.buf.rename, '[r]ename')
 
+          map('<leader>lf', vim.lsp.buf.format, '[f]ormat')
+
           map('<leader>lr', require('telescope.builtin').lsp_references, 'List [R]eferances')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
@@ -430,7 +436,8 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        ruff_lsp = {
+        wgsl_analyzer = {},
+        ruff = {
           -- unsure of format
           settings = {
             lint = {
@@ -455,39 +462,29 @@ require('lazy').setup({
             },
           },
         },
-
-        -- pylsp = {
-        --   settings = {
-        --     pylsp = {
-        --       plugins = {
-        --         ruff = {
-        --           enable = true,
-        --         },
-        --         rope_autoimport = {
-        --           enabled = true,
-        --         },
-        --       },
-        --     },
-        --   },
-        -- },
-
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
-              checkOnSave = { allTargets = false },
               diagnostics = {
-                enable = false,
+                disabled = { 'inactive-code' },
+              },
+
+              checkOnSave = {
+                -- allTargets = false, -- workaround to avoid errors in nostd development
+                command = 'clippy',
               },
               cargo = {
                 -- this fixes an issue where rust-analyzer was invalidating
                 -- the cargo cache, so unnecessary recompiles were occuring
-                targetDir = true,
+                -- targetDir = true,
+                -- features = 'all',
+                -- allTargets = true,
               },
             },
           },
         },
-        tsserver = {},
-        wgsl_analyzer = {},
+        ts_ls = {},
+        --fennel_ls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -564,7 +561,7 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { c = true, cpp = true, python = false }
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -761,7 +758,25 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'python',
+        'rust',
+        'javascript',
+        'typescript',
+        'clojure',
+        'fennel',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -772,11 +787,24 @@ require('lazy').setup({
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          -- init_selection = '<leader>nn', -- set to `false` to disable one of the mappings
+          -- node_incremental = '<leader>rn',
+          -- scope_incremental = '<leader>rc',
+          -- node_decremental = '<leader>rm',
+        },
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+      --
+      -- Highlight @foo.bar as "Identifier" only in Lua files
+      vim.api.nvim_set_hl(0, '@lsp.type.typeParameter', { link = 'Orange' })
+      vim.api.nvim_set_hl(0, '@type.param', { link = 'Orange' })
 
-      ---@diagnostic disable-next-line: missing-fields
+      --@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
 
       -- There are additional nvim-treesitter modules that you can use to interact
@@ -836,6 +864,15 @@ require('lazy').setup({
     },
   },
 })
+
+-- GODOT
+local lspconfig = require 'lspconfig'
+lspconfig.gdscript.setup {}
+
+local pipepath = vim.fn.stdpath 'cache' .. '/server.pipe'
+if not vim.loop.fs_stat(pipepath) then
+  vim.fn.serverstart(pipepath)
+end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
