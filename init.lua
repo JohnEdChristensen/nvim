@@ -72,6 +72,9 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 vim.opt.tabstop = 4
 
+-- Diagnostics
+vim.diagnostic.config { severity_sort = true }
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -276,6 +279,9 @@ require('lazy').setup({
     end,
   },
 
+  {
+    'nvim-pack/nvim-spectre',
+  },
   -- LSP Plugins
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
